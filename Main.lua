@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/magbux/BorealisUiLib/refs/heads/main/Library.Lua"))()
-local Window = Library.new("CubeWare")
+local Window = Library.new("CubeWare (HAPPY BIRTHDAY OWNER!!!)")
 
 local BlatantTab = Window:MakeTab("BLATANT")
 
