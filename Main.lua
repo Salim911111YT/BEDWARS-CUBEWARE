@@ -86,11 +86,11 @@ end
 
 pcall(function()
 	task.spawn(function()
-    	while task.wait() do
+    	while task.wait(0.15) do
         	if Settings["KillAura"]["Enabled"] == false then continue end
        		
 			SwordHit()
-       	 	task.wait(0.07)
+       	 	task.wait(0.15)
     	end
 	end)
 end)
