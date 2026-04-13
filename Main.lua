@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/magbux/BorealisUiLib/refs/heads/main/Library.Lua"))()
-local Window = Library.new("CubeWare (HAPPY BIRTHDAY OWNER!!!)")
+local Window = Library.new("CubeWare (BEDWARS EDITION) (HAPPY BIRTHDAY OWNER!!!) (V1.0.0)")
 
 local BlatantTab = Window:MakeTab("BLATANT")
 
@@ -49,17 +49,17 @@ local function SwordHit()
     local sword = getSword()
 
     if sword then
-        for _, p in pairs(workspace:GetDescendants()) do
-			if p:IsA("Humanoid") then continue end
+        for _, p in pairs(plrs:GetPlayers()) do
+			--if p:IsA("Humanoid") then continue end
 
-            if p.Parent ~= lp and p.Parent and p.Parent:FindFirstChild("HumanoidRootPart") then
-                local pPos = p.Parent.HumanoidRootPart.Position
+            if p.Parent ~= lp and p.Parent and p.Character:FindFirstChild("HumanoidRootPart") then
+                local pPos = p.Character.HumanoidRootPart.Position
                 local lpPos = lp.Character.HumanoidRootPart.Position
             
 			          if dist(lpPos, pPos) <= Settings["KillAura"]["KillAuraReach"] then
                       local args = {
                               [1] = {
-                                      ["entityInstance"] = p.Parent,
+                                      ["entityInstance"] = p.Character,
                                       ["chargedAttack"] = {
                                       ["chargeRatio"] = 0
                                  },
@@ -86,11 +86,11 @@ end
 
 pcall(function()
 	task.spawn(function()
-    	while task.wait(0.15) do
+    	while task.wait(0.05) do
         	if Settings["KillAura"]["Enabled"] == false then continue end
        		
 			SwordHit()
-       	 	task.wait(0.15)
+       	 	task.wait(0.05)
     	end
 	end)
 end)
