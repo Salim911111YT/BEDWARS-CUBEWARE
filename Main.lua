@@ -9,6 +9,14 @@ local SettingsTab = Window:MakeTab("Settings")
 local BlatantTab = Window:MakeTab("BLATANT")
 local keybind_cooldown = false
 
+local swordThingies = {
+	"sword",
+	"hammer",
+	"gauntlet",
+	"blade",
+	"rageblade"
+}
+
 local Settings = {
   ["KillAura"] = {
     ["Enabled"] = false,
@@ -26,11 +34,15 @@ local net = rs.rbxts_include.node_modules:FindFirstChild("@rbxts").net.out._NetM
 local inv = rs.Inventories:FindFirstChild(lp.Name)
 
 local function getSword()
-  return inv:FindFirstChild("wood_sword") or
-  inv:FindFirstChild("stone_sword") or
-  inv:FindFirstChild("iron_sword") or
-  inv:FindFirstChild("diamond_sword") or
-  inv:FindFirstChild("emerald_sword")
+    for i = 1, #swordThingies do
+	    local item = swordThingies[i]
+
+	    for _, v in pairs(inv:GetChildren()) do
+		    if v.Name:find(tostring(item)) or v.Name == tostring(item) then
+			    return v
+		    end
+	    end
+    end
 end
 
 local function dist(p1, p2)
@@ -38,14 +50,23 @@ local function dist(p1, p2)
 end
 
 local function checkBehindWalls()
-	local plr = game:GetService("Players").LocalPlayer
-	local ray = workspace:Raycast(plr.Character.PrimaryPart.Position, 
+	local plr = lp
+	
+	if plr then
+		if plr.Character and plr.Character.PrimaryPart then
+			local ray = workspace:Raycast(plr.Character.PrimaryPart.Position, 
 	(plr.Character.PrimaryPart.Position + plr.Character.PrimaryPart.CFrame.LookVector.Unit * Settings["KillAura"]["Angle"]))
 
 	if ray then
 		if ray.Instance then
 			if ray.Instance.Parent:FindFirstChildOfClass("Humanoid") then
-				return true
+						return true
+					else
+						return false
+					end
+				else
+					return false
+				end
 			else
 				return false
 			end
@@ -54,7 +75,7 @@ local function checkBehindWalls()
 		end
 	else
 		return false
-	end
+	end	
 
 	return false
 end
@@ -132,7 +153,7 @@ local function SwordHit()
 			--if p:IsA("Humanoid") then continue end
 			if p == lp then continue end
 			
-            if p and p.Character:FindFirstChild("HumanoidRootPart") then
+            if p and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
                 local pPos = p.Character.HumanoidRootPart.Position
                 local lpPos = lp.Character.HumanoidRootPart.Position
 
@@ -177,7 +198,14 @@ pcall(function()
     	while task.wait(Settings["KillAura"]["Cooldown"]) do
         	if Settings["KillAura"]["Enabled"] == false then continue end
        		
-			SwordHit()
+			if lp then
+				if lp.Character then
+					if lp.Character.PrimaryPart then
+						SwordHit()
+					end
+				end
+			end
+
        	 	task.wait(Settings["KillAura"]["Cooldown"])
     	end
 	end)
